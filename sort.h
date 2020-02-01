@@ -20,5 +20,9 @@ void print_array(const int *array, size_t size);
 void print_list(const listint_t *list);
 void bubble_sort(int *array, size_t size);
 void insertion_sort_list(listint_t **list);
+void insert_top(listint_t *sort, listint_t *prog);
+void insert_end(listint_t *sort, listint_t *prog);
+void insert_middle(listint_t *sort, listint_t *prog);
+void insert_uniq(listint_t *sort, listint_t *prog);
 
 #endif
