@@ -1,29 +1,49 @@
 #include "sort.h"
 
 /**
- *bubble_sort - sort an array using the bubble sort algorithm
- *@array:array to be sorted
- *@size:size of the array
+ *insertion_sort_list - sort an doubly linked list, insertion method.
+ *@list:Doubly linked list to be sorted
  */
 
-void bubble_sort(int *array, size_t size)
+void insertion_sort_list(listint_t **list)
 {
-	int i, temp, k;
-	int check_sort;
+	listint_t *temp, *sort, *prog;
 
-	k = size;
-	do {
-		check_sort = 0;
-		for (i = 1; i < k; i++)
+	prog = (*list)->next;
+	while (prog && prog->next)
+	{
+		sort = prog->prev;
+		temp = prog->next;
+		if (sort->n > prog->n)
 		{
-			if (array[i - 1] > array[i])
+			while(sort)
 			{
-				temp = array[i - 1];
-				array[i - 1] = array[i];
-				array[i] = temp;
-				print_array(array, size);
-				check_sort = 1;
+				if (sort->n > prog->n)
+				{
+					if (sort->prev == NULL)
+					{
+						sort->next = prog->next;
+						prog->next->prev = sort;
+						prog->next = sort;
+						sort->prev = prog;
+						prog->prev = NULL;
+						*list = prog;
+						print_list(*list);
+					}
+					else
+					{
+						sort->next = prog->next;
+						prog->next->prev = sort;
+						sort->prev->next = prog;
+						prog->next = sort;
+						prog->prev = sort->prev;
+						sort->prev = prog;
+						print_list(*list);
+					}
+				}
+				sort = sort->prev;
 			}
 		}
-	} while (check_sort);
+		prog = temp;
+	}
 }
