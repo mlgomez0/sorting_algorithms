@@ -24,7 +24,7 @@ void insertion_sort_list(listint_t **list);
 void insert_top(listint_t *sort, listint_t *prog);
 void insert_end(listint_t *sort, listint_t *prog);
 void insert_middle(listint_t *sort, listint_t *prog);
-void insert_uniq(listint_t *sort, listint_t *prog);
+void insert_uniq(listint_t *sort, listint_t *prog, listint_t **list);
 void selection_sort(int *array, size_t size);
 void quick_sort(int *array, size_t size);
 int partition_step(int *array, int lo, int hi, size_t size);

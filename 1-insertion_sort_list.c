@@ -26,10 +26,7 @@ void insertion_sort_list(listint_t **list)
 				if (sort->n > prog->n)
 				{
 					if (sort->prev == NULL && prog->next == NULL)
-					{
-						insert_uniq(sort, prog);
-						*list = prog;
-					}
+						insert_uniq(sort, prog, list);
 					else if (sort->prev == NULL)
 					{
 						insert_top(sort, prog);
@@ -101,12 +98,14 @@ void insert_middle(listint_t *sort, listint_t *prog)
  *insert_uniq - insert a node when only two nodes in a doubly linked list.
  *@sort:pointer to a node of doubly linked list.
  *@prog:pointer to a node of doubly linked list.
+ *@list: pointer of doubly linked list
  */
 
-void insert_uniq(listint_t *sort, listint_t *prog)
+void insert_uniq(listint_t *sort, listint_t *prog, listint_t **list)
 {
 	sort->prev = prog;
 	sort->next = NULL;
 	prog->next = sort;
 	prog->prev = NULL;
+	*list = prog;
 }
