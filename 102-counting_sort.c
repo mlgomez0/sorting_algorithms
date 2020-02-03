@@ -1,5 +1,4 @@
 #include "sort.h"
-#include<stdlib.h>
 
 /**
  *counting_sort- sort an array using the counting sort algorithm
