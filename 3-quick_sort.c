@@ -76,5 +76,6 @@ void swap_arr(int *a, int *b, int *array, size_t size)
 	temp = *a;
 	*a = *b;
 	*b = temp;
-	print_array(array, size);
+	if (temp != *a)
+		print_array(array, size);
 }
