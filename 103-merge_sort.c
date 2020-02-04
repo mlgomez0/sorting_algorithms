@@ -9,67 +9,91 @@
 void merge_sort(int *array, size_t size)
 {
 	int n = size - 1;
-	int i;
-	int *receive;
 
 	if (array == NULL || size < 2)
 		return;
-	receive = mergesort(array, 0, n);
-	for (i = 0; i < (n + 1); i++)
-	{
-		array[i] = receive[i];
-	}
+	mergesort(array, 0, n);
 }
 
 /**
- *quicksort - do recursive operation to partiion
+ *mergesort - do recursive operation to partition
  *@array:array to be sorted
  *@lo: low index
- *@hi: higher index of the list
- *@size:size of the array
+ *@hi: higher index of array
  */
 
-int *mergesort(int *array, int lo, int hi)
+void mergesort(int *array, int lo, int hi)
 {
 	int m;
 
-	if (lo > hi)
-		return array;
 
-
-	m = (lo + hi)/ 2;
-	mergesort(array, lo, m);
-	mergesort(array, m + 1, hi);
-	return (merge(array, lo, m, hi));
+	if (lo <  hi)
+	{
+		m = (lo + hi) / 2;
+		mergesort(array, lo, m);
+		mergesort(array, m + 1, hi);
+		merge_arrays(array, lo, m, hi);
+	}
 }
 
 /**
- *swap_arr - swaps two array elements
- *@a: first element
- *@b: second element
- *@array:array to be sorted
- *@size:size of the array
+ *merge_arrays - merge two arrays
+ *@array: array to be sorted
+ *@lo: low index
+ *@m: middle position to partition
+ *@hi:higher indext
  */
 
-int *merge(int *array, int lo, int m, int hi)
+void merge_arrays(int *array, int lo, int m, int hi)
 {
-	int *receive;
-	int i = 0;
+	int i = lo, j, k = 0, n;
+	int *support;
 
-
-	printf("Merging...\n");
-	receive = malloc(sizeof(int) * (hi + 1));
-	for (i = lo; i < hi; i++)
+	n = hi - lo + 1;
+	j = m + 1;
+	support = malloc(n * sizeof(int));
+	if (support == NULL)
+		return;
+	printf("support: ");
+	while (i <= m && j <= hi)
 	{
-		if (array[i] < array[i + m])
+		if (array[i] <= array[j])
 		{
-			receive[i] = array[i];
+			support[k] = array[i];
+			i++;
+			printf("%d, ", support[k]);
+			k++;
 		}
 		else
 		{
-			receive[i] = array[i + m];
+			support[k] = array[j];
+			j++;
+			printf("%d, ", support[k]);
+			k++;
 		}
+
+	}
+	printf("\n");
+	while (i <= m)
+	{
+		support[k] = array[i];
+		k++;
 		i++;
 	}
-	return (receive);
+	while (j <= hi)
+	{
+		support[k] = array[j];
+		k++;
+		j++;
+	}
+	printf("merged: \n");
+	for (i = lo; i < hi; i++)
+	{
+		array[i] = support[i - lo];
+		printf("%d, ", array[i]);
+		i++;
+		j++;
+	}
+	printf("\n");
+	free(support);
 }
