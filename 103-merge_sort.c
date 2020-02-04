@@ -51,10 +51,10 @@ int *mergesort(int *array, int lo, int hi)
  *@size:size of the array
  */
 
-int merge(int *array, int lo, int m, int hi)
+int *merge(int *array, int lo, int m, int hi)
 {
 	int *receive;
-	int i = 0, j;
+	int i = 0;
 
 
 	printf("Merging...\n");
