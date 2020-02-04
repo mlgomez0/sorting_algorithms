@@ -8,10 +8,11 @@
 
 void counting_sort(int *array, size_t size)
 {
-	int i = 0, max_num = array[0], k = size, *count_ele, *temp_array;
+	int i = 0, max_num, k = size, *count_ele, *temp_array;
 
 	if (array == NULL || size < 2)
 		return;
+	max_num = array[0];
 	for (i = 1; i < k; i++)
 	{
 		if (array[i] > max_num)
@@ -46,6 +47,5 @@ void counting_sort(int *array, size_t size)
 	{
 		array[i] = temp_array[i];
 	}
-	free(count_ele);
-	free(temp_array);
+	free(count_ele), free(temp_array);
 }
