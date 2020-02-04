@@ -8,7 +8,7 @@
 
 void counting_sort(int *array, size_t size)
 {
-	int i = 0, flag = 0, max_num = array[0], k = size, *count_ele, *temp_array;
+	int i = 0, max_num = array[0], k = size, *count_ele, *temp_array;
 
 	if (array == NULL || size < 2)
 		return;
@@ -16,11 +16,7 @@ void counting_sort(int *array, size_t size)
 	{
 		if (array[i] > max_num)
 			max_num = array[i];
-		if (array[i] < array[i - 1])
-			flag = 1;
 	}
-	if (flag == 0)
-		return;
 	max_num = max_num + 1;
 	count_ele = malloc((max_num) * sizeof(int));
 	if (count_ele == NULL)
