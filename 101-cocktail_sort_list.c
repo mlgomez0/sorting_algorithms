@@ -1,5 +1,6 @@
 #include "sort.h"
 
+
 /**
  *cocktail_sort_list - sort an array using the cocktail sort algorithm.
  *@list:Doubly linked list to be sorted
@@ -7,8 +8,8 @@
 
 void cocktail_sort_list(listint_t **list)
 {
-	listint_t *temp, *sort, *prog, *progt, *sortt, *tempt, *tail;
-	int check_sort = 0, end_list;
+	listint_t *prog, *progt, *tail;
+	int check_sort = 0;
 
 	if (list == NULL || *list == NULL)
 		return;
@@ -17,133 +18,150 @@ void cocktail_sort_list(listint_t **list)
 	{
 		tail = tail->next;
 	}
-	prog = (*list)->next;
-	progt = tail->prev;
 	do {
+		prog = (*list)->next;
+		progt = tail->prev;
 		check_sort = 0;
-		while (prog)
-		{
-			sort = prog->prev;
-			temp = prog->next;
-			if (temp == NULL)
-				end_list = 1;
-			if (sort->n > prog->n)
-			{
-				check_sort = 1;
-				if (sort->prev == NULL && prog->next == NULL)
-				{
-					insert_uniq(sort, prog);
-					*list = prog;
-				}
-				else if (sort->prev == NULL)
-				{
-					insert_top(sort, prog);
-					*list = prog;
-				}
-				else if (end_list == 1)
-				{
-					insert_end(sort, prog);
-					end_list = 0;
-				}
-				else
-					insert_middle(sort, prog);
-				print_list(*list);
-			}
-			prog = temp;
-		}
+		r_c(prog, list, &tail, &check_sort);
 		if (check_sort == 0)
 			break;
-		while (progt)
-		{
-			end_list = 0;
-			sortt = progt->next;
-			tempt = progt->prev;
-			if (tempt == NULL)
-				end_list = 1;
-			if (sortt->n < progt->n)
-			{
-				check_sort = 1;
-				if (sortt->next == NULL && progt->prev == NULL)
-				{
-					insert_uniq(progt, sortt);
-					*list = sortt;
-				}
-				else if (progt->prev == NULL)
-				{
-					insert_top(progt, sortt);
-					*list = sortt;
-				}
-				else if (end_list == 1)
-				{
-					insert_end(progt, sortt);
-					end_list = 0;
-				}
-				else
-					insert_middle(progt, sortt);
-				print_list(*list);
-			}
-			progt = tempt;
-		}
-
+		check_sort = 0;
+		l_c(progt, list, &tail, &check_sort);
 	} while (check_sort);
 }
 
 /**
- *insert_top - insert a node at the top of doubly linked list.
- *@sort:pointer to a node of doubly linked list.
- *@prog:pointer to a node of doubly linked list.
+ *r_c - makes the right cicle sortin a doubly linked list.
+ *@prog:pointer to a node to start sort.
+ *@list:head of the doubly linked list.
+ *@tail:tail of the doubly linked list.
+ *@check_sort: controls if the list is already sorted.
  */
 
-void insert_top(listint_t *sort, listint_t *prog)
+void r_c(listint_t *prog, listint_t **list, listint_t **tail, int *check_sort)
 {
-	sort->next = prog->next;
-	prog->next->prev = sort;
-	prog->next = sort;
-	sort->prev = prog;
-	prog->prev = NULL;
+	listint_t *sort, *temp;
+	int end_list = 0;
+
+	while (prog)
+	{
+		sort = prog->prev;
+		temp = prog->next;
+		if (temp == NULL)
+			end_list = 1;
+		if (sort->n > prog->n)
+		{
+			*check_sort = 1;
+			if (sort->prev == NULL && prog->next == NULL)
+			{
+				insert_all(list, sort, prog, 4);
+			}
+			else if (sort->prev == NULL)
+			{
+				insert_all(list, sort, prog, 1);
+				*list = prog;
+			}
+			else if (end_list == 1)
+			{
+				insert_all(list, sort, prog, 2);
+				*tail = sort;
+				end_list = 0;
+			}
+			else
+				insert_all(list, sort, prog, 3);
+			print_list(*list);
+		}
+		prog = temp;
+	}
 }
 
 /**
- *insert_end - insert a node at the end  of doubly linked list.
- *@sort:pointer to a node of doubly linked list.
- *@prog:pointer to a node of doubly linked list.
+ *l_c - makes the left cicle sorting a doubly linked list.
+ *@progt:pointer to a node to start sort.
+ *@list:head of the doubly linked list.
+ *@tail:tail of the doubly linked list.
+ *@check_sort: controls if the list is already sorted.
  */
 
-void insert_end(listint_t *sort, listint_t *prog)
+void l_c(listint_t *progt, listint_t **list, listint_t **tail, int *check_sort)
 {
-	sort->prev->next = prog;
-	prog->prev = sort->prev;
-	prog->next = sort;
-	sort->prev = prog;
-	sort->next = NULL;
+	int end_list = 0;
+	listint_t *tempt, *sortt;
+
+	while (progt)
+	{
+		sortt = progt->next;
+		tempt = progt->prev;
+		if (sortt == NULL)
+			end_list = 1;
+		if (sortt->n < progt->n)
+		{
+			*check_sort = 1;
+			if (sortt->next == NULL && progt->prev == NULL)
+			{
+				insert_all(list, progt, sortt, 4);
+			}
+			else if (progt->prev == NULL)
+			{
+				insert_all(list, progt, sortt, 1);
+				*list = sortt;
+			}
+			else if (end_list == 1)
+			{
+				insert_all(list, progt, sortt, 2);
+				*tail = progt;
+				end_list = 0;
+			}
+			else
+				insert_all(list, progt, sortt, 3);
+			print_list(*list);
+		}
+		progt = tempt;
+	}
 }
 
-/**
- *insert_middle - insert a node in the middle of doubly linked list.
- *@sort:pointer to a node of doubly linked list.
- *@prog:pointer to a node of doubly linked list.
- */
-
-void insert_middle(listint_t *sort, listint_t *prog)
-{
-	sort->next = prog->next;
-	prog->next->prev = sort;
-	sort->prev->next = prog;
-	prog->next = sort;
-	prog->prev = sort->prev;
-	sort->prev = prog;
-}
 
 /**
- *insert_uniq - insert a node when only two nodes in a doubly linked list.
+ *insert_all - insert a node at the indicated place in doubly linked list.
+ *@list: head of the doubly linked list.
  *@sort:pointer to a node of doubly linked list.
  *@prog:pointer to a node of doubly linked list.
+ *@ind:indication to add the node (1 = top, 2 = end, 3 = mid, 4 = uniq).
  */
 
-void insert_uniq(listint_t *sort, listint_t *prog)
+void insert_all(listint_t **list, listint_t *sort, listint_t *prog, int ind)
 {
-	sort->prev = prog;
-	sort->next = NULL;
-	prog->next = sort;
-	prog->prev = NULL;
+	if (ind == 1)
+	{
+		sort->next = prog->next;
+		prog->next->prev = sort;
+		prog->next = sort;
+		sort->prev = prog;
+		prog->prev = NULL;
+	}
+	else if (ind == 2)
+	{
+		sort->prev->next = prog;
+		prog->prev = sort->prev;
+		prog->next = sort;
+		sort->prev = prog;
+		sort->next = NULL;
+	}
+	else if (ind == 3)
+	{
+		sort->next = prog->next;
+		prog->next->prev = sort;
+		sort->prev->next = prog;
+		prog->next = sort;
+		prog->prev = sort->prev;
+		sort->prev = prog;
+	}
+	else
+	{
+		sort->prev = prog;
+		sort->next = NULL;
+		prog->next = sort;
+		prog->prev = NULL;
+		*list = prog;
+	}
 }
