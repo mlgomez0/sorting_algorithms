@@ -11,9 +11,7 @@ void cocktail_sort_list(listint_t **list)
 	listint_t *prog, *progt, *tail;
 	int check_sort = 0;
 
-	if (list == NULL || *list == NULL)
-		return;
-	if ((*list)->next == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 	tail = *list;
 	while (tail->next)
@@ -22,12 +20,12 @@ void cocktail_sort_list(listint_t **list)
 	}
 	do {
 		prog = (*list)->next;
-		progt = tail->prev;
 		check_sort = 0;
 		r_c(prog, list, &tail, &check_sort);
 		if (check_sort == 0)
 			break;
 		check_sort = 0;
+		progt = tail->prev;
 		l_c(progt, list, &tail, &check_sort);
 	} while (check_sort);
 }
@@ -57,6 +55,7 @@ void r_c(listint_t *prog, listint_t **list, listint_t **tail, int *check_sort)
 			if (sort->prev == NULL && prog->next == NULL)
 			{
 				insert_all(list, sort, prog, 4);
+				*tail = sort;
 			}
 			else if (sort->prev == NULL)
 			{
@@ -102,6 +101,7 @@ void l_c(listint_t *progt, listint_t **list, listint_t **tail, int *check_sort)
 			if (sortt->next == NULL && progt->prev == NULL)
 			{
 				insert_all(list, progt, sortt, 4);
+				*tail = progt;
 			}
 			else if (progt->prev == NULL)
 			{
