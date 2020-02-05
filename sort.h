@@ -36,5 +36,6 @@ void counting_sort(int *array, size_t size);
 void merge_sort(int *array, size_t size);
 void mergesort(int *array, int lo, int hi);
 void merge_arrays(int *array, int lo, int m, int hi);
+void print_merge(int *array, int lo, int m, int hi, int flag);
 
 #endif

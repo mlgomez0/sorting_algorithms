@@ -46,7 +46,8 @@ void mergesort(int *array, int lo, int hi)
 
 void merge_arrays(int *array, int lo, int m, int hi)
 {
-	int i = lo, j, k = 0, n, *support;
+	int i = lo, j, k = 0, n;
+	int *support;
 
 	n = hi - lo + 1;
 	j = m + 1;
@@ -80,22 +81,14 @@ void merge_arrays(int *array, int lo, int m, int hi)
 		k++;
 		j++;
 	}
+	print_merge(array, lo, m, hi, 1);
 	for (i = lo; i <= hi; i++)
 	{
 		array[i] = support[i - lo];
 	}
-	print_merge(array, lo, m, hi, 1);
 	free(support);
 }
 
-/**
- *print_merge - print merging and merged arrays
- *@array: array to be printed
- *@lo: low index
- *@m: middle position to partition
- *@hi:higher index
- *@flag: to validate merging or merged
- */
 void print_merge(int *array, int lo, int m, int hi, int flag)
 {
 	int i;
